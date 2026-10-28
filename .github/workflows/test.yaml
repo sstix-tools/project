@@ -14,9 +14,22 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v4
 
-      - name: Test execution and help flag
+      - name: Test project commands
         run: |
-          chmod +x bin/template-bash-utility
-          ./bin/template-bash-utility --help
-          ./bin/template-bash-utility --version
-          ./bin/template-bash-utility status
+          set -euo pipefail
+          temp_root="$(mktemp -d)"
+          trap 'rm -rf "$temp_root"' EXIT
+          project_path="$temp_root/example"
+          mkdir -p "$project_path"
+          export PROJECT_DB_DIR="$temp_root/db"
+
+          ./bin/project --help
+          ./bin/project -a example "$project_path"
+          test "$(./bin/project --print-path example)" = "$project_path"
+          ./bin/project -d example "Example project"
+
+          info="$(./bin/project -i example)"
+          [[ "$info" == *"$project_path"* ]]
+          [[ "$info" == *"Example project"* ]]
+          listing="$(./bin/project -l)"
+          [[ "$listing" == *"example"* ]]
