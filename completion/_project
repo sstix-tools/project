@@ -1,0 +1,43 @@
+project() {
+  if [[ \$# -eq 1 && "\$1" != -* ]]; then
+    local target
+    target="\$("$script_path" --print-path "\$1")" || return
+    builtin cd "\$target" || return
+  else
+    "$script_path" "\$@"
+  fi
+}
+
+_project_complete() {
+  local -a opts projs
+  local dbdir
+  dbdir="\${PROJECT_DB_DIR:-\$HOME/.local/share/projectctl}"
+
+  opts=(-a -d -i -l -h --help)
+  projs=()
+  [[ -d "\$dbdir" ]] && projs=(\${(@f)\$(command ls -1 "\$dbdir" 2>/dev/null | sed 's/\\.proj\$//')})
+
+  case "\${words[2]:-}" in
+    -i|-d)
+      _describe -t projects 'project names' projs && return
+      ;;
+  esac
+
+  _arguments \
+    '(-a -d -i -l -h --help)--help[Show help]' \
+    '(-a -d -i -l -h --help)-h[Show help]' \
+    '(-a -d -i -h --help)-l[List projects]' \
+    '(-d -i -l -h --help)-a[Add project]:name: :path:_files -/' \
+    '(-a -i -l -h --help)-d[Set description]:name:->project_name:description:' \
+    '(-a -d -l -h --help)-i[Info]:name:->project_name' \
+    '(--print-path)--print-path[Print project path]:name:->project_name' \
+    '*:project name:->project_name'
+
+  case "\$state" in
+    project_name)
+      _describe -t projects 'project names' projs
+      ;;
+  esac
+}
+
+compdef _project_complete project
