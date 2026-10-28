@@ -1,5 +1,5 @@
 {
-  description = "template-bash-utility - Template for Bash CLI utilities";
+  description = "project - TODO";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
@@ -15,9 +15,9 @@
     in
     {
       packages = forAllSystems (system: pkgs: rec {
-        default = template-bash-utility;
-        template-bash-utility = pkgs.stdenvNoCC.mkDerivation {
-          pname = "template-bash-utility";
+        default = project;
+        project = pkgs.stdenvNoCC.mkDerivation {
+          pname = "project";
           version = "1.0.0";
           src = ./.;
 
@@ -25,8 +25,8 @@
 
           installPhase = ''
             mkdir -p $out/bin $out/share/zsh/site-functions
-            install -D -m 0755 bin/template-bash-utility $out/bin/template-bash-utility
-            wrapProgram $out/bin/template-bash-utility \
+            install -D -m 0755 bin/project $out/bin/project
+            wrapProgram $out/bin/project \
               --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.jq ]}
             if [ -d completion ]; then
               cp -r completion/* $out/share/zsh/site-functions/ 2>/dev/null || true
@@ -34,8 +34,8 @@
           '';
 
           meta = {
-            description = "Template Bash utility script";
-            mainProgram = "template-bash-utility";
+            description = "TODO";
+            mainProgram = "project";
             platforms = pkgs.lib.platforms.unix;
           };
         };
@@ -44,7 +44,7 @@
       apps = forAllSystems (system: pkgs: {
         default = {
           type = "app";
-          program = "${self.packages.${system}.default}/bin/template-bash-utility";
+          program = "${self.packages.${system}.default}/bin/project";
         };
       });
     };

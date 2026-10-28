@@ -1,12 +1,11 @@
-Source: template-bash-utility
+Source: project
 Section: utils
 Priority: optional
-Maintainer: sstix-tools <tools@sstix.invalid>
+Maintainer: Simeon Stix <simeon.stix@protonmail.ch>
 Standards-Version: 4.6.0
 Rules-Requires-Root: no
 
-Package: template-bash-utility
+Package: project
 Architecture: all
 Depends: coreutils
-Description: Bash script utility template
- A utility script packaged for sstix-tools.
+Description: TODO
