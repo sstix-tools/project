@@ -1,6 +1,6 @@
-# template-bash-utility
+# project
 
-Template repository for creating POSIX / Bash shell script utilities deployed via `sstix-tools` for **APT**, **RPM**, and **Nix** with **Zsh autocompletion**.
+`project` is a Bash utility for saving project directories by name, retrieving their paths, updating descriptions, and listing projects grouped by path. It includes Zsh completion and can be packaged for Debian, RPM-based Linux, and Nix.
 
 ## Repository Structure
 ```
@@ -8,9 +8,9 @@ Template repository for creating POSIX / Bash shell script utilities deployed vi
 │   ├── release.yaml             # Automated packaging and release pipeline
 │   └── test.yaml                # CI test workflow
 ├── bin/
-│   └── template-bash-utility    # Main executable script
+│   └── project                  # Main executable script
 ├── completion/
-│   └── _template-bash-utility   # Zsh completion definition
+│   └── _project                 # Zsh completion definition
 ├── packaging/
 │   ├── debian/                  # Debian package metadata
 │   └── rpm/                     # RPM spec file
@@ -20,19 +20,19 @@ Template repository for creating POSIX / Bash shell script utilities deployed vi
 └── README.md
 ```
 
-## How to Use This Template
-1. Create a new repository in GitHub from this template under the `sstix-tools` organization.
-2. Rename the files and occurrences of `template-bash-utility` to your tool name:
-   - `bin/template-bash-utility` -> `bin/<your-tool>`
-   - `completion/_template-bash-utility` -> `completion/_<your-tool>`
-   - `packaging/rpm/template-bash-utility.spec` -> `packaging/rpm/<your-tool>.spec`
-   - In `flake.nix`: update `pname = "<your-tool>"` and description
-   - In `.github/workflows/release.yaml`: update `pkg_name="<your-tool>"`
-   - In `packaging/debian/control`: update `Package:` and `Description:`
-3. Implement your utility logic in `bin/<your-tool>`.
-4. Commit your changes and tag a release:
-   ```bash
-   git tag v1.0.0
-   git push origin v1.0.0
-   ```
-5. GitHub Actions will automatically build Debian (`.deb`), RPM (`.rpm`), and Nix assets and dispatch a trigger to `sstix-tools/registry`.
+## Usage
+
+```bash
+project -a myproj ~/src/myproj
+project -d myproj "Cool service"
+project myproj
+project --print-path myproj
+project -i myproj
+project -l
+```
+
+The database defaults to `~/.local/share/projectctl`; set `PROJECT_DB_DIR` to use a different location. `project` prints a path but cannot change the current shell's directory when run as an executable.
+
+## Releases
+
+Push a `v*` tag to build Debian (`.deb`) and RPM (`.rpm`) packages and publish the source archive and registry manifest. The Nix package is defined in `flake.nix`.
