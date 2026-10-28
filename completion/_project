@@ -1,23 +1,14 @@
-project() {
-  if [[ \$# -eq 1 && "\$1" != -* ]]; then
-    local target
-    target="\$("$script_path" --print-path "\$1")" || return
-    builtin cd "\$target" || return
-  else
-    "$script_path" "\$@"
-  fi
-}
+#compdef project
 
-_project_complete() {
-  local -a opts projs
+_project() {
+  local -a projs
   local dbdir
-  dbdir="\${PROJECT_DB_DIR:-\$HOME/.local/share/projectctl}"
+  dbdir="${PROJECT_DB_DIR:-$HOME/.local/share/projectctl}"
 
-  opts=(-a -d -i -l -h --help)
   projs=()
-  [[ -d "\$dbdir" ]] && projs=(\${(@f)\$(command ls -1 "\$dbdir" 2>/dev/null | sed 's/\\.proj\$//')})
+  [[ -d "$dbdir" ]] && projs=( ${(@f)$(command ls -1 "$dbdir" 2>/dev/null | sed 's/\.proj$//')} )
 
-  case "\${words[2]:-}" in
+  case "${words[2]:-}" in
     -i|-d)
       _describe -t projects 'project names' projs && return
       ;;
@@ -33,11 +24,9 @@ _project_complete() {
     '(--print-path)--print-path[Print project path]:name:->project_name' \
     '*:project name:->project_name'
 
-  case "\$state" in
+  case "$state" in
     project_name)
       _describe -t projects 'project names' projs
       ;;
   esac
 }
-
-compdef _project_complete project

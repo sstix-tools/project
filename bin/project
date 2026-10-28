@@ -9,7 +9,6 @@ set -u
 #   project -i myproj           # show info
 #   project -l                  # list grouped by path
 #   project --print-path myproj # print only the path
-#   eval "$(/path/to/project --shell-integration)"  # enable shell wrapper + zsh completion
 
 : "${PROJECT_DB_DIR:="$HOME/.local/share/projectctl"}"
 
@@ -86,7 +85,6 @@ Commands:
 Notes:
   • Data: $PROJECT_DB_DIR (default: ~/.local/share/projectctl).
   • As a normal executable, this script cannot cd your current shell.
-  • Use --shell-integration from ~/.zshrc to enable a shell wrapper that can cd.
 EOF
 }
 
@@ -148,19 +146,6 @@ project__list() {
   rm -f "$tmp"
 }
 
-project__emit_shell_integration() {
-  local script_path
-  if command -v realpath >/dev/null 2>&1; then
-    script_path="$(realpath "$0" 2>/dev/null || printf '%s' "$0")"
-  else
-    script_path="$0"
-  fi
-
-  cat <<EOF
-it was here
-EOF
-}
-
 main() {
   local PATH="$PATH:/usr/bin:/bin:/usr/local/bin"
   project__dbdir >/dev/null
@@ -171,10 +156,6 @@ main() {
   fi
 
   case "$1" in
-    --shell-integration)
-      project__emit_shell_integration
-      ;;
-
     -a)
       local name="${2:-}" path="${3:-}"
       if [[ -z "$name" || -z "$path" ]]; then
