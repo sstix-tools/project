@@ -1,5 +1,5 @@
 {
-  description = "project - TODO";
+  description = "Manage named project directories from the command line";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
@@ -27,14 +27,14 @@
             mkdir -p $out/bin $out/share/zsh/site-functions
             install -D -m 0755 bin/project $out/bin/project
             wrapProgram $out/bin/project \
-              --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.jq ]}
+              --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.bash pkgs.coreutils pkgs.gnused ]}
             if [ -d completion ]; then
               cp -r completion/* $out/share/zsh/site-functions/ 2>/dev/null || true
             fi
           '';
 
           meta = {
-            description = "TODO";
+            description = "Manage named project directories from the command line";
             mainProgram = "project";
             platforms = pkgs.lib.platforms.unix;
           };

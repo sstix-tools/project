@@ -7,5 +7,7 @@ Rules-Requires-Root: no
 
 Package: project
 Architecture: all
-Depends: coreutils
-Description: TODO
+Depends: bash, coreutils, sed
+Suggests: zsh
+Description: Manage named project directories from the command line
+ Save project paths by name, retrieve them, and list entries grouped by path.
