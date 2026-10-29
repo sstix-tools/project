@@ -1,7 +1,7 @@
 Source: project
 Section: utils
 Priority: optional
-Maintainer: Simeon Stix <simeon.stix@protonmail.ch>
+Maintainer: Simeon Stix <sstix@stix.foo>
 Standards-Version: 4.6.0
 Rules-Requires-Root: no
 

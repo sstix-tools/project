@@ -99,7 +99,7 @@ jobs:
           Section: utils
           Priority: optional
           Architecture: all
-          Maintainer: sstix-tools <tools@sstix.invalid>
+          Maintainer: sstix-tools <sstix@stix.foo>
           Depends: bash, coreutils, sed
           Suggests: zsh
           Description: Manage named project directories from the command line
